@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 class TaskCreate(BaseModel):
-    tittle: str
+    title: str
     description: str | None = None
     owner_id: int
 
