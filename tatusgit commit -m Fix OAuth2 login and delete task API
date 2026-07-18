@@ -1,0 +1,41 @@
+[1mdiff --git a/app/routers/auth.py b/app/routers/auth.py[m
+[1mindex dad88b3..55fb160 100644[m
+[1m--- a/app/routers/auth.py[m
+[1m+++ b/app/routers/auth.py[m
+[36m@@ -2,9 +2,9 @@[m [mfrom fastapi import APIRouter, Depends, HTTPException[m
+ from sqlalchemy.orm import Session[m
+ [m
+ from app.database import SessionLocal[m
+[31m-from app.schemas.auth import LoginRequest [m
+ from app import crud[m
+ from app.auth import create_access_token[m
+[32m+[m[32mfrom fastapi.security import OAuth2PasswordRequestForm[m
+ [m
+ router = APIRouter([m
+     prefix="/auth",[m
+[36m@@ -23,14 +23,14 @@[m [mdef get_db():[m
+ [m
+ @router.post("/login")[m
+ def login([m
+[31m-    user: LoginRequest,[m
+[32m+[m[32m    form_data: OAuth2PasswordRequestForm = Depends(),[m
+     db: Session = Depends(get_db)[m
+ ):[m
+ [m
+     db_user = crud.login_user([m
+         db,[m
+[31m-        user.email,[m
+[31m-        user.password[m
+[32m+[m[32m        form_data.username,[m
+[32m+[m[32m        form_data.password[m
+     )[m
+ [m
+     if not db_user:[m
+[36m@@ -48,4 +48,4 @@[m [mdef login([m
+     return {[m
+         "access_token": token,[m
+         "token_type": "bearer"[m
+[31m-        }[m
+\ No newline at end of file[m
+[32m+[m[32m    }[m
+\ No newline at end of file[m

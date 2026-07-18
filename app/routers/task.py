@@ -60,7 +60,7 @@ def delete_task(
     db: Session = Depends(get_db)
 ):
     
-    deleted_task = crud.deleted_task(db, task_id)
+    deleted_task = crud.delete_task(db, task_id)
 
     if not deleted_task:
         raise HTTPException(

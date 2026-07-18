@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database import SessionLocal
-from app.schemas.auth import LoginRequest 
 from app import crud
 from app.auth import create_access_token
+from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter(
     prefix="/auth",
@@ -23,14 +23,14 @@ def get_db():
 
 @router.post("/login")
 def login(
-    user: LoginRequest,
+    form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db)
 ):
 
     db_user = crud.login_user(
         db,
-        user.email,
-        user.password
+        form_data.username,
+        form_data.password
     )
 
     if not db_user:
@@ -48,4 +48,4 @@ def login(
     return {
         "access_token": token,
         "token_type": "bearer"
-        }
+    }
