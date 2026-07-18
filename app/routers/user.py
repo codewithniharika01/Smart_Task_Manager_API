@@ -17,14 +17,12 @@ def get_db():
     finally:
         db.close()
 
-
 @router.post("/")
 def create_user(
     user: user_schema.UserCreate,
     db: Session = Depends(get_db)
 ):
-    return crud.Create_user(db=db, user_data=user)
-
+    return crud.create_user(db=db, user_data=user)
 
 @router.get("/")
 def get_all_users(
